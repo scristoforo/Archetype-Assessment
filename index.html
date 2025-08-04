@@ -222,5 +222,49 @@
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
     });
   </script>
+  <script>
+// Ensure archetypeScores object exists from your scoring logic
+const archetypeDescriptions = {
+  "The Merchant": "Master of exchange and value: pragmatic, persuasive, adept at negotiation.",
+  "The Artisan": "Creator and maker: meticulous, patient, driven by craft and excellence.",
+  "The Steward": "Guardian of resources: prudent, reliable, focused on sustainability and legacy.",
+  "The Warrior": "Embodiment of strength and courage: decisive, honor-driven, protective.",
+  "The Sentinel": "Watchful guardian: observant, vigilant, preventative thinker.",
+  "The Strategist": "Planner and analyst: forward-thinking, logical, risk-aware.",
+  "The Diplomat": "Peacemaker and bridge-builder: empathetic, articulate, harmony-focused.",
+  "The Noble": "Principled leader: integrity-driven, service-oriented, inspiring others.",
+  "The Elder": "Source of wisdom: experienced, compassionate mentor, guiding others softly."
+};
+
+function displayTriadResults() {
+  const results = archetypeScores;
+  const groups = {
+    Provider: ["The Merchant","The Artisan","The Steward"],
+    Protector: ["The Warrior","The Sentinel","The Strategist"],
+    Presider: ["The Diplomat","The Noble","The Elder"]
+  };
+
+  let triadResults = {};
+  for (const triad in groups) {
+    let top = groups[triad][0];
+    for (const arch of groups[triad]) {
+      if (results[arch] > results[top]) top = arch;
+    }
+    triadResults[triad] = top;
+  }
+
+  const resultBox = document.getElementById("result");
+  let html = "<h2>Your Archetypal Triad</h2>";
+  for (const triad in triadResults) {
+    const arch = triadResults[triad];
+    html += `<h3>${triad}</h3>
+      <p><strong>${arch}</strong>: ${archetypeDescriptions[arch]}</p>`;
+  }
+  html += `<p style="margin-top:1em; font-size:0.9em;">These archetypes reflect your strongest mode of providing, protecting, and presiding.</p>`;
+  resultBox.innerHTML = html;
+  document.getElementById("quiz").style.display = "none";
+  resultBox.style.display = "block";
+}
+</script>
 </body>
 </html>
